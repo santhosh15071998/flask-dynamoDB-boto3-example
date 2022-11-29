@@ -20,7 +20,7 @@ resource = resource(
 
 def create_table_movie():    
     table = resource.create_table(
-        TableName = 'Movie', # Name of the table 
+        TableName = 'TachyonAssignment', # Name of the table 
         KeySchema = [
             {
                 'AttributeName': 'id',
@@ -42,24 +42,23 @@ def create_table_movie():
 
 MovieTable = resource.Table('Movie')
 
-def write_to_movie(id, title, director):
+def write_to_dynamodb(id, data):
     response = MovieTable.put_item(
         Item = {
             'id'     : id,
-            'title'  : title,
-            'director' : director,
-            'upvotes'  : 0
+            'data'  : data,
+            
         }
     )
     return response
 
-def read_from_movie(id):
+def read_from_dynamodb(id):
     response = MovieTable.get_item(
         Key = {
             'id'     : id
         },
         AttributesToGet = [
-            'title', 'director' # valid types dont throw error, 
+            'data' # valid types dont throw error, 
         ]                      # Other types should be converted to python type before sending as json response
     )
     return response
